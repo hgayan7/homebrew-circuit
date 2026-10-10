@@ -1,26 +1,26 @@
 class Circuit < Formula
-  desc "The Governance & Safety Proxy for AI Agents and MCP Tooling"
-  homepage "https://circuitproxy.com"
-  version "0.1.0"
+  desc "Governed execution boundary for autonomous AI agents"
+  homepage "https://github.com/hgayan7/circuit"
+  version "0.3.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/hgayan7/circuit/releases/download/v0.1.0/circuit_0.1.0_darwin_arm64.tar.gz"
-      sha256 "1ed4ed3fc0a46167d1fe52bde10f5a8e2ba7dfd0941bf4d6b1a1b478da9bad15"
+      url "https://github.com/hgayan7/circuit/releases/download/v0.3.0/circuit_0.3.0_darwin_arm64.tar.gz"
+      sha256 "be99d07509090fbe39fcd571d5eb2de0e5d141fc7472eb26e36972d89c1c4553"
     else
-      url "https://github.com/hgayan7/circuit/releases/download/v0.1.0/circuit_0.1.0_darwin_amd64.tar.gz"
-      sha256 "7fadbcd34d53f8ef6b82fbed490eb55cd84ad7925480037420e49c165ce6bdd3"
+      url "https://github.com/hgayan7/circuit/releases/download/v0.3.0/circuit_0.3.0_darwin_amd64.tar.gz"
+      sha256 "eba135169484c2738b50c89138161fb61191f5dbc32bb64166e0b696db310342"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/hgayan7/circuit/releases/download/v0.1.0/circuit_0.1.0_linux_arm64.tar.gz"
-      sha256 "b31ead694dcac684f5831832ebb680aeec48fb71bdfd3c7c2b65b36dc89ae3fb"
+      url "https://github.com/hgayan7/circuit/releases/download/v0.3.0/circuit_0.3.0_linux_arm64.tar.gz"
+      sha256 "5a8558583bf23ac124b84ebfaf20ca6246e5dfcb2f2a01b075267c99a18ad772"
     else
-      url "https://github.com/hgayan7/circuit/releases/download/v0.1.0/circuit_0.1.0_linux_amd64.tar.gz"
-      sha256 "50608cb8b1825a236e81dd1fe86937df2ab11ee1386ca8e51c57c32b24597b14"
+      url "https://github.com/hgayan7/circuit/releases/download/v0.3.0/circuit_0.3.0_linux_amd64.tar.gz"
+      sha256 "a6334fe887f33d85ad709b59bae6a73ecdea585932a8ad2718a791910c8e7511"
     end
   end
 
@@ -29,6 +29,6 @@ class Circuit < Formula
   end
 
   test do
-    system "#{bin}/circuit", "version"
+    assert_equal "circuit v#{version}", shell_output("#{bin}/circuit version").strip
   end
 end

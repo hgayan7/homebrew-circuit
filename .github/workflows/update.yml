@@ -1,0 +1,43 @@
+name: Update validated Circuit release
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/update.yml'
+      - 'scripts/**'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: circuit-formula-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Verify release gates and archive checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update_formula.py
+      - name: Check formula and updater regressions
+        run: |
+          ruby -c Formula/circuit.rb
+          python3 -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Publish formula update
+        run: |
+          if git diff --quiet -- Formula/circuit.rb; then
+            echo 'Formula is already current'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/circuit.rb
+          git commit -m 'Update Circuit to latest validated stable release'
+          git push origin HEAD:main
