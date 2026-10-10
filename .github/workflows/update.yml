@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/update.yml'
       - 'scripts/**'
+      - 'Formula/**'
 
 permissions:
   contents: write
@@ -41,3 +42,18 @@ jobs:
           git add Formula/circuit.rb
           git commit -m 'Update Circuit to latest validated stable release'
           git push origin HEAD:main
+
+  homebrew-smoke:
+    if: github.event_name == 'push'
+    runs-on: macos-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install and test the formula
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+        run: |
+          brew tap hgayan7/circuit "$GITHUB_WORKSPACE"
+          brew install hgayan7/circuit/circuit
+          brew test hgayan7/circuit/circuit

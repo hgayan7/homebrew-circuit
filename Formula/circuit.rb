@@ -29,6 +29,6 @@ class Circuit < Formula
   end
 
   test do
-    assert_equal "circuit v#{version}", shell_output("#{bin}/circuit version").strip
+    assert_equal "circuit v#{version}", shell_output("#{bin}/circuit version 2>&1").strip
   end
 end
